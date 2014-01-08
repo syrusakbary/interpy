@@ -1,0 +1,7 @@
+/build/
+
+*.pyc
+
+/dist/
+
+/interpy.egg-info/
