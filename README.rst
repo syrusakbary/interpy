@@ -27,10 +27,8 @@ Example:
 
 .. code:: python
 
-    #!/usr/bin/env python
     # coding: interpy
 
-    # Vars
     package = "Interpy"
     print "Enjoy #{package}!"
 
@@ -50,6 +48,25 @@ encoding called interpy which allows it to convert interpolated strings
 into regular python before the file is compiled. Once the interpy codec
 is registered, any file starting with ``# coding: interpy`` is run
 through the interpy parser before compilation.
+
+Compiling
+~~~~~~~~~
+
+The above example would be compiled to this (in *bytecode*):
+
+.. code:: python
+
+    # coding: interpy
+
+    package = "Interpy"
+    print "Enjoy "+str(package)+"!"
+
+
+Compatibility
+-------------
+
+This package is fully compatible with Python 2+, Python 3+ and PyPy
+
 
 Why?
 ----

@@ -18,10 +18,8 @@ All python files with string interpolation must have the following first line
 Example:
 
 ```python
-#!/usr/bin/env python
 # coding: interpy
 
-# Vars
 package = "Interpy"
 print "Enjoy #{package}!"
 ```
@@ -33,6 +31,23 @@ print "Enjoy #{package}!"
 ### Parsing
 
 Interpy uses support for specifying source code encodings as described in [PEP 263](http://www.python.org/dev/peps/pep-0263/) to do what it does. The functionality was originally provided so that python developers could write code in non-ascii languages (eg. chinese variable names). Interpy creates a custom encoding called interpy which allows it to convert interpolated strings into regular python before the file is compiled. Once the interpy codec is registered, any file starting with `# coding: interpy` is run through the interpy parser before compilation.
+
+
+### Compiling
+
+The above example would be compiled to this (in *bytecode*):
+
+```python
+# coding: interpy
+
+package = "Interpy"
+print "Enjoy "+str(package)+"!"
+```
+
+## Compatibility
+
+This package is fully compatible with Python 2+, Python 3+ and PyPy
+
 
 ## Why?
 
