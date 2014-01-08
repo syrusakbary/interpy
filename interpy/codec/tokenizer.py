@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import tokenize
-from StringIO import StringIO
+from .utils import StringIO, next
 
 class InterpolationError(tokenize.TokenError): pass
 
@@ -19,6 +19,7 @@ def interpy_untokenize(tokens):
         # Add whitespace
         col_offset = col - prev_col
         if col_offset > 0:
+
             parts.append(" " * col_offset)
 
         parts.append(tvalue)
@@ -27,8 +28,8 @@ def interpy_untokenize(tokens):
         if ttype in (tokenize.NL, tokenize.NEWLINE):
             prev_row += 1
             prev_col = 0
-
     return ''.join(parts)
+
 
 def inject_tokens(value, start=0):
     level = 0
@@ -36,19 +37,19 @@ def inject_tokens(value, start=0):
     interpolation = value.split('#{', 1)
     tokens = []
     if len(interpolation) > 1:
-        st, next = interpolation
+        st, next_st = interpolation
         if st == quotes:
-            new_value = '{%s'%(next)
+            new_value = '{%s'%(next_st)
         else:
-            new_value = '%s%s+{%s'%(st, quotes, next)
+            new_value = '%s%s+{%s'%(st, quotes, next_st)
     else:
         new_value = value
     new_value_lines = new_value.split('\n')
     tokens_iter = tokenize.generate_tokens(StringIO(new_value).readline)
     while 1:
         try:
-            token = tokens_iter.next()
-        except (StopIteration, tokenize.TokenError), e:
+            token = next(tokens_iter)
+        except (StopIteration, tokenize.TokenError) as e:
             break
         ttype, tvalue, tstart, tend, tline = token
         if ttype in (tokenize.NL, tokenize.NEWLINE) and level != 0:
@@ -89,13 +90,12 @@ def interpy_tokenize(readline):
     tokens = tokenize.generate_tokens(readline)
     while 1:
         try:
-            token = tokens.next()
+            token = next(tokens)
         except (StopIteration, tokenize.TokenError):
             break
-
         ttype, tvalue, tstart, tend, tline = token
         DOUBLE = '"'
-        if (ttype == tokenize.STRING and tvalue[0] == DOUBLE and tvalue[-1] == DOUBLE):
+        if (ttype == tokenize.STRING and tvalue[-1] == DOUBLE):
             for s_token in inject_tokens(tvalue, tend[1]):
                 yield s_token
         else:

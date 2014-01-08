@@ -1,21 +1,19 @@
 #!/usr/bin/env python
 from __future__ import with_statement
+import codecs, encodings
 
-import codecs, cStringIO, encodings
-import sys
 from .tokenizer import interpy_tokenize, interpy_untokenize
+from .utils import StringIO
 
 def interpy_transform(stream):
     try:
         output = interpy_untokenize(interpy_tokenize(stream.readline))
-    except Exception, ex:
-        print ex
-        raise
-
-    return output.rstrip()
+    except Exception as ex:
+        raise ex
+    return output.encode("utf-8")
 
 def interpy_transform_string(text):
-    stream = cStringIO.StringIO(text)
+    stream = StringIO(text)
     return interpy_transform(stream)
 
 def search_function(encoding):
@@ -25,6 +23,8 @@ def search_function(encoding):
     utf8 = encodings.search_function('utf8')
 
     def interpy_decode(input, errors='strict'):
+        if isinstance(input, memoryview):
+            input = input.tobytes().decode("utf-8")
         return utf8.decode(interpy_transform_string(input), errors)
 
     class InterpyIncrementalDecoder(utf_8.IncrementalDecoder):
@@ -39,7 +39,7 @@ def search_function(encoding):
     class InterpyStreamReader(utf_8.StreamReader):
         def __init__(self, *args, **kwargs):
             codecs.StreamReader.__init__(self, *args, **kwargs)
-            self.stream = cStringIO.StringIO(interpy_transform(self.stream))
+            self.stream = StringIO(interpy_transform(self.stream))
 
 
     return codecs.CodecInfo(
