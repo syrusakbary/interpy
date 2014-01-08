@@ -19,7 +19,7 @@ class install(_install):
         self.execute(_post_install, (self.install_lib,),
                      msg="Running post install task")
 
-version = "1.0"
+version = "1.1"
 
 setup(
     cmdclass={'install': install},
@@ -34,4 +34,16 @@ setup(
     description="Interpy extends Python to support Ruby like string interpolation #{}.",
     long_description=open('README.rst').read(),
     keywords='python string interpolation interpolate ruby codec',
+    classifiers=[
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+    ],
 )
