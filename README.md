@@ -25,7 +25,7 @@ print "Enjoy #{package}!"
 ```
 
 ## How it works
-*This package is inspired in Dropbox [pyxl template engine](https://github.com/dropbox/pyxl).*
+*This package is inspired by Dropbox's [pyxl template engine](https://github.com/dropbox/pyxl).*
 
 
 ### Parsing
