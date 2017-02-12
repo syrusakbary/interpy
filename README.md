@@ -1,7 +1,7 @@
 # Interpy = Python String Interpolation
 Interpy **extends Python** to support *Ruby like* string interpolation **#{}**. Quick example: `print "Hello #{your_name}"`
 
-It is **hightly optimized**, and directly compiled to bytecode, so you will have the same Python speed when using it.
+It is **highly optimized**, and directly compiled to bytecode, so you will have the same Python speed when using it.
 
 ## Installation
 
